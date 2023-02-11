@@ -35,6 +35,11 @@
           "type": "boolean",
           "default": false,
           "description": "Allow Color Pick to collect color search events and color selection events."
+        },
+        "color-pick.clipboardNotify": {
+          "type": "boolean",
+          "default": true,
+          "description": "Notify when the selected color has been written to clipboard."
         }
       }
     }

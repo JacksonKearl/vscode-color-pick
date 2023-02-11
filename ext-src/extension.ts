@@ -156,9 +156,15 @@ class ReactPanel {
             });
             const colorString =
               mode === "hex" ? hex : `rgba(${r},${g},${b},${a})`;
-            vscode.window.showInformationMessage(
-              `${colorString} copied to clipboard`
-            );
+            if (
+              vscode.workspace
+                .getConfiguration()
+                .get('color-pick.clipboardNotify')
+            ){
+              vscode.window.showInformationMessage(
+                `${colorString} copied to clipboard`,
+              )
+            }
         }
       },
       null,
@@ -206,26 +212,26 @@ class ReactPanel {
       reporter.sendTelemetryEvent("extensionStarted", { environment });
 
     return `<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="utf-8">
-				<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-				<meta name="theme-color" content="#000000">
-				<title>Color Pick</title>
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';style-src vscode-resource: 'unsafe-inline' http: https: data:;">
-				<base href="${vscode.Uri.file(path.join(this._extensionPath, "build")).with({
+      <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <meta name="theme-color" content="#000000">
+        <title>Color Pick</title>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';style-src vscode-resource: 'unsafe-inline' http: https: data:;">
+        <base href="${vscode.Uri.file(path.join(this._extensionPath, "build")).with({
           scheme: "vscode-resource"
         })}/">
-			</head>
-			<body>
-				<noscript>You need to enable JavaScript to run this app.</noscript>
+      </head>
+      <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
         <script nonce="${nonce}" >
           INITIAL_COLOR_PICKER_DATA = ${JSON.stringify(initialState)}
         </script> 
-				<script nonce="${nonce}" src="${scriptUri}"></script>
-			</body>
-			</html>`;
+        <script nonce="${nonce}" src="${scriptUri}"></script>
+      </body>
+      </html>`;
   }
 }
 
